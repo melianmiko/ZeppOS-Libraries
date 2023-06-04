@@ -6,7 +6,7 @@ export class ConfigStorage {
 
     if(file !== null) {
       this.file = file;
-    } {
+    } else {
       this.file = new Path("data", "config.json");
     }
   }
