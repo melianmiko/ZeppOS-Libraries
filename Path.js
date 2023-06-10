@@ -26,11 +26,18 @@ export class Path {
   }
 
   get(path) {
-    return new Path(this.scope, `${this.path}/${path}`);
+    const newPath = this.path === "/" ? path : `${this.path}/${path}`;
+    return new Path(this.scope, newPath);
   }
 
   resolve() {
     return new Path("full", this.absolutePath);
+  }
+
+  src() {
+    if(this.scope !== "assets")
+      throw new Error("Can't get src for non-asset");
+    return this.relativePath.substring(1);
   }
 
   stat() {
