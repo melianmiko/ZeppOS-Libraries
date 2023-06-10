@@ -3,9 +3,10 @@ import {Path} from "./Path";
 import {SCREEN_WIDTH} from "./UiParams";
 
 export class ResolveFromAssets {
-    constructor(assetRoot, pageRoot="") {
-        this.path = new Path("assets", assetRoot);
-        this.pageRoot = pageRoot;
+    constructor(textFilesRoot, pagesRoot="page/", assetsRoot="") {
+        this.path = new Path("assets", textFilesRoot);
+        this.pageRoot = pagesRoot;
+        this.assetsRoot = assetsRoot
     }
 
     getText(path) {
@@ -13,7 +14,7 @@ export class ResolveFromAssets {
     }
 
     assetPath(path) {
-        return this.path.get(path).src();
+        return this.assetsRoot + path;
     }
 
     pagePath(path) {
