@@ -1,10 +1,11 @@
 import {ListScreen} from "./ListScreen";
 import {Path} from "./Path";
-import {SCREEN_MARGIN_X, SCREEN_MARGIN_Y, SCREEN_WIDTH} from "./UiParams";
+import {SCREEN_WIDTH} from "./UiParams";
 
 export class ResolveFromAssets {
-    constructor(root) {
-        this.path = new Path("assets", root);
+    constructor(assetRoot, pageRoot="") {
+        this.path = new Path("assets", assetRoot);
+        this.pageRoot = pageRoot;
     }
 
     getText(path) {
@@ -14,13 +15,18 @@ export class ResolveFromAssets {
     assetPath(path) {
         return this.path.get(path).src();
     }
+
+    pagePath(path) {
+        return this.pageRoot + path;
+    }
 }
 
 export class MarkdownRenderScreen extends ListScreen {
-    constructor(resolver, url) {
+    constructor(resolver, url, selfPage="MarkdownReader") {
         super();
         this.resolver = resolver;
         this.url = url;
+        this.selfPage = selfPage;
     }
 
     start() {
@@ -53,7 +59,18 @@ export class MarkdownRenderScreen extends ListScreen {
         this.row({
             text: label,
             icon: "icon_s/link.png",
-            callback: () => hmApp.gotoPage({url: url})
+            callback: () => {
+                if(url.startsWith("page://")) {
+                    hmApp.gotoPage({
+                        url: this.resolver.pagePath(url.substring(7))
+                    })
+                } else {
+                    hmApp.gotoPage({
+                        url: this.resolver.pagePath(this.selfPage),
+                        param: url
+                    })
+                }
+            }
         })
     }
 
