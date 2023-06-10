@@ -127,7 +127,7 @@ export class ListScreen {
 			...userConfig
 		};
 
-		const textWidth = (config.card.width ? config.card.width : WIDGET_WIDTH) - 44 - 8;
+		const textWidth = (config.card.width ? config.card.width : WIDGET_WIDTH) - (ICON_SIZE_SMALL * 2);
 		const { height } = hmUI.getTextLayout(config.text, {
 			text_size: config.fontSize, 
 			text_width: textWidth
