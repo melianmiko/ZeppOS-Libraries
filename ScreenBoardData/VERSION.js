@@ -1,1 +1,1 @@
-export const SCREEN_BOARD_VER = "2023.06.04";
+export const SCREEN_BOARD_VER = "2023.06.30";

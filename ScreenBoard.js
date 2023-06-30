@@ -161,11 +161,11 @@ export class ScreenBoard {
       w: w - 4,
       h: DeviceParams.rowHeight - 4,
       text: "",
-      text_size: DeviceParams.buttonFontSize,
+      text_size: DeviceParams.buttonFontSize - 8,
       normal_color: 0x191919,
       press_color: 0x222222,
       radius: 4,
-      color: 0x555555,
+      color: 0x777777,
       click_func: () => handler()
     })
   }

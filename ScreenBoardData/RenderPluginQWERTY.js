@@ -5,6 +5,7 @@ export class RenderPluginQWERTY {
   constructor(board) {
     this.board = board;
     this.hasBackspace = true;
+    this.hasLanguageIndicator = true;
     this.layoutData = LAYOUTS_QWERTY;
     this.symbolsData = QWERTY_SYMBOLS;
     this.extraLayouts = [];
@@ -22,7 +23,7 @@ export class RenderPluginQWERTY {
     for(let i = 0; i < 3; i++) {
       let count = this.buttonCounts[i];
       let [x,y,w] = this.board.tools.getRowPosition(i);
-      if(i == 2) {
+      if(i === 2) {
         x += 48;
         w -= 96;
       }
@@ -76,6 +77,7 @@ export class RenderPluginQWERTY {
 
   useLayout(name) {
     this.capsButton.setProperty(hmUI.prop.SRC, this.board.tools.getCapsIcon());
+    this.spaceBtn.setProperty(hmUI.prop.TEXT, name.toUpperCase());
     return this.manager.useLayout(name);
   }
 }

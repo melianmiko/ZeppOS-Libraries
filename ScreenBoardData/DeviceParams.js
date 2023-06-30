@@ -42,7 +42,7 @@ switch(deviceName) {
       screenHeight: DeviceInfo.height - 48 * 4 - 32 - 64,
       fontSize: 18,
       buttonFontSize: 24,
-      circle: deviceClass == "circle",
+      circle: deviceClass === "circle",
       layouts: ["t14", "qwerty", "t9"]
     };
     break;
