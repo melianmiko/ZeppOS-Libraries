@@ -16,10 +16,12 @@ export class RowEntry extends CardEntry {
     _init() {
         super._init();
 
-        const viewHeight = this.rowViewHeight;
 		this.textView = this.group.createWidget(hmUI.widget.TEXT, this._textViewConfig);
 		this.iconView = this.group.createWidget(hmUI.widget.IMG, this._iconViewConfig)
+    }
 
+    _postInit() {
+        super._postInit();
 		if(this.rowConfig.callback) {
 			this.getEvents().ontouch = (e) => this.rowConfig.callback(this, e);
 		}

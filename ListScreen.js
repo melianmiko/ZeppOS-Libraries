@@ -172,6 +172,7 @@ export class ListScreen {
 	_classBasedEntry(ClassEntry, userConfig) {
 		const entry = new ClassEntry(userConfig, this, this.positionY);
 		entry._init();
+		entry._postInit();
         this._registerRow(entry);
 		return entry;
 	}

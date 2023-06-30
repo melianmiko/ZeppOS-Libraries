@@ -16,6 +16,10 @@ export class TextEntry {
         this.widget = hmUI.createWidget(hmUI.widget.TEXT, this._widgetConfig);
     }
 
+    _postInit() {
+
+    }
+
     _setPositionY(y) {
         this.positionY = y;
         this.widget.setProperty(hmUI.prop.MORE, this._widgetConfig);

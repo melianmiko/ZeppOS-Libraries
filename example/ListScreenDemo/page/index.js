@@ -6,6 +6,12 @@ class TestScreen extends ListScreen {
       text: "Row 1",
       callback: (card, event) => {
         console.log(card, event);
+      },
+      card: {
+        hiddenButton: "Edit",
+        hiddenButtonCallback: () => {
+          console.log("SSSSSSSSSSS");
+        }
       }
     })
 
