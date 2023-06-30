@@ -188,9 +188,6 @@ export class ListScreen {
 	}
 
 	_registerRow(data) {
-		console.log(data, data.viewHeight);
-		// if(!data.viewHeight || !data._setPositionY)
-		// 	console.log("Non-movable row", data);
 		data._lastHeight = data.viewHeight;
 		data._index = this.entries.length;
 		this.entries.push(data);
