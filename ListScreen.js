@@ -1,12 +1,14 @@
-import { 
-	SCREEN_MARGIN_Y, 
-	WIDGET_WIDTH, 
-	SCREEN_MARGIN_X, 
-	SCREEN_WIDTH, 
+import {
 	BASE_FONT_SIZE,
-	ICON_SIZE_SMALL
+	ICON_SIZE_SMALL,
+	SCREEN_MARGIN_X,
+	SCREEN_MARGIN_Y,
+	SCREEN_WIDTH,
+	WIDGET_WIDTH
 } from "./UiParams";
-import { TouchEventManager } from "./TouchEventManager";
+import {CardEntry} from "./ListScreenParts/CardEntry";
+import {RowEntry} from "./ListScreenParts/RowEntry";
+import {TextEntry} from "./ListScreenParts/TextEntry";
 
 
 export class ListScreen {
@@ -14,13 +16,14 @@ export class ListScreen {
 		this.positionY = SCREEN_MARGIN_Y;
 		this.fontSize = BASE_FONT_SIZE;
 		this.accentColor = 0x0077AA;
+		this.entries = [];
 	}
 
 	build() {}
 
 	headline(text) {
 		const lineHeight = Math.floor(BASE_FONT_SIZE * 1.5);
-		const widget = hmUI.createWidget(hmUI.widget.TEXT, {
+		const config = {
 			x: SCREEN_MARGIN_X + 4,
 			w: WIDGET_WIDTH - 8,
 			h: lineHeight,
@@ -29,19 +32,45 @@ export class ListScreen {
 			y: this.positionY,
 			text_size: BASE_FONT_SIZE - 4,
 			text
-		});
+		};
+		const widget = hmUI.createWidget(hmUI.widget.TEXT, config);
+		const entry = {
+			widget,
+			viewHeight: lineHeight,
+			positionY: this.positionY,
+			_setPositionY: (y) => {
+				entry.positionY = y;
+				widget.setProperty(hmUI.prop.MORE, {
+					...config,
+					y
+				});
+			}
+		};
 
-		this.positionY += lineHeight;
-		return { widget };
+		this._registerRow(entry);
+		return entry;
 	}
 
 	offset(height = SCREEN_MARGIN_Y) {
-		hmUI.createWidget(hmUI.widget.IMG, {
+		const config = {
 			x: 0,
 			y: this.positionY,
 			w: SCREEN_WIDTH,
 			h: height
-		})
+		};
+
+		const entry = {
+			widget: hmUI.createWidget(hmUI.widget.IMG, config),
+			positionY: this.positionY,
+			viewHeight: height,
+			_setPositionY(y) {
+				entry.positionY = y;
+				entry.widget.setProperty(hmUI.prop.MORE, {...config, y});
+			}
+		};
+
+		this._registerRow(entry);
+		return entry;
 	}
 
 	twoActionBar(items) {
@@ -86,82 +115,7 @@ export class ListScreen {
 	}
 
 	text(userConfig) {
-		const config = {
-			color: 0xFFFFFF,
-			fontSize: this.fontSize,
-			card: {},
-			...userConfig
-		};
-
-		const textWidth = WIDGET_WIDTH - 8;
-		const { height } = hmUI.getTextLayout(config.text, {
-			text_size: config.fontSize, 
-			text_width: textWidth
-		});
-
-		const widget = hmUI.createWidget(hmUI.widget.TEXT, {
-			x: SCREEN_MARGIN_X + 4,
-			y: this.positionY,
-			w: textWidth,
-			h: height,
-			align_v: hmUI.align.CENTER_V,
-			text_style: hmUI.text_style.WRAP,
-			text_size: config.fontSize,
-			color: config.color,
-			text: config.text
-		});
-
-		this.positionY += height + 4;
-
-		return {
-			widget
-		}
-	}
-
-	row(userConfig) {
-		// Merge default config
-		const config = {
-			color: 0xFFFFFF,
-			fontSize: this.fontSize,
-			card: {},
-			...userConfig
-		};
-
-		const textWidth = (config.card.width ? config.card.width : WIDGET_WIDTH) - (ICON_SIZE_SMALL * 2);
-		const { height } = hmUI.getTextLayout(config.text, {
-			text_size: config.fontSize, 
-			text_width: textWidth
-		});
-
-		const viewHeight = Math.max(this.baseRowHeight, height + 36);
-		const card = this.card({
-			height: viewHeight,
-			...config.card,
-		});
-
-		card.textView = card.group.createWidget(hmUI.widget.TEXT, {
-			x: ICON_SIZE_SMALL * 2,
-			y: 0,
-			w: textWidth,
-			h: viewHeight,
-			align_v: hmUI.align.CENTER_V,
-			text_style: hmUI.text_style.WRAP,
-			text_size: config.fontSize,
-			color: config.color,
-			text: config.text
-		});
-
-		card.iconView = card.group.createWidget(hmUI.widget.IMG, {
-			x: Math.floor(ICON_SIZE_SMALL / 2),
-			y: Math.floor((viewHeight - ICON_SIZE_SMALL) / 2),
-			src: config.icon
-		})
-
-		if(config.callback) {
-			card.getEvents().ontouch = () => config.callback(card);
-		}
-
-		return card;
+		return this._classBasedEntry(TextEntry, userConfig);
 	}
 
 	checkboxRow(config) {
@@ -191,14 +145,14 @@ export class ListScreen {
 			value = row.value;
 			for(let i of views)
 				i.iconView.setProperty(hmUI.prop.SRC, 
-					value == i.value ? config.iconTrue : config.iconFalse);
+					value === i.value ? config.iconTrue : config.iconFalse);
 			config.callback(value);
 		};
 
 		for(const item of config.options) {
 			const row = this.row({
 				text: item.name,
-				icon: value == item.value ? config.iconTrue : config.iconFalse,
+				icon: value === item.value ? config.iconTrue : config.iconFalse,
 				callback
 			});
 			row.value = item.value;
@@ -206,62 +160,40 @@ export class ListScreen {
 		}
 	}
 
+	row(userConfig) {
+		return this._classBasedEntry(RowEntry, userConfig);
+	}
+
+
 	card(userConfig) {
-		const config = {
-			color: 0x111111,
-			offsetX: 0,
-			radius: 8,
-			width: WIDGET_WIDTH,
-			...userConfig
-		};
+		return this._classBasedEntry(CardEntry, userConfig);
+	}
 
-		const group = hmUI.createWidget(hmUI.widget.GROUP, {
-			x: SCREEN_MARGIN_X + config.offsetX,
-			y: this.positionY,
-			w: config.width,
-			h: config.height
-		});
-		const bg = group.createWidget(hmUI.widget.FILL_RECT, {
-			x: 0,
-			y: 0,
-			w: config.width,
-			h: config.height,
-			color: config.color,
-			radius: config.radius,
-		});
+	_classBasedEntry(ClassEntry, userConfig) {
+		const entry = new ClassEntry(userConfig, this, this.positionY);
+		entry._init();
+        this._registerRow(entry);
+		return entry;
+	}
 
-		if(!config.dontChangePosY) 
-			this.positionY += config.height + 8;
+	onHeightChange(entry) {
+		const delta = entry.viewHeight - entry._lastHeight;
 
-		return { 
-			group,
-			bg,
-			config,
-			_events: null,
-			getEvents() {
-				if(!this._events) {
-					const cb = this.group.createWidget(hmUI.widget.IMG, {
-						x: 0,
-						y: 0,
-						w: config.width,
-						h: config.height
-					});
-					this._events = new TouchEventManager(cb);
-				}
+		this.positionY += delta;
+		entry._lastHeight = entry.viewHeight;
 
-				return this._events;
-			}
+		for(let i = entry._index + 1; i < this.entries.length; i++) {
+			this.entries[i]._setPositionY(this.entries[i].positionY + delta);
 		}
 	}
 
-	get baseRowHeight() {
-		if(this.fontSize !== this._brh_lastheight) {
-			this._brh_lastheight = this.fontSize
-			this._brh_cached = hmUI.getTextLayout(" ", {
-				text_size: this.fontSize,
-				text_width: 96,
-			}).height + 36;
-		}
-		return this._brh_cached;
+	_registerRow(data) {
+		console.log(data, data.viewHeight);
+		// if(!data.viewHeight || !data._setPositionY)
+		// 	console.log("Non-movable row", data);
+		data._lastHeight = data.viewHeight;
+		data._index = this.entries.length;
+		this.entries.push(data);
+		this.positionY += data.viewHeight;
 	}
 }
