@@ -43,7 +43,6 @@ export class CardEntry {
         const evs = this.getEvents();
         evs.ontouchdown = (e) => {
             startX = e.x;
-            console.log('start', startX);
         };
         evs.ontouchmove = (e) => {
             this._swipeX = -Math.max(0, Math.min(startX - e.x, 96))

@@ -62,7 +62,7 @@ export class RowEntry extends CardEntry {
     }
 
     get textWidth() {
-		return (this.config.width ? this.config.width : WIDGET_WIDTH) - (ICON_SIZE_SMALL * 2);
+		return (this.config.width ? this.config.width : WIDGET_WIDTH) - (ICON_SIZE_SMALL * 2) - 8;
     }
 
     get rowViewHeight() {
