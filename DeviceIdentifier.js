@@ -64,6 +64,16 @@ switch(info.deviceSource) {
     deviceName = "T-Rex Ultra";
     deviceClass = "circle";
     break;
+  case 8126720:
+  case 8126721:
+    deviceName = "Cheetah Pro";
+    deviceClass = "circle";
+    break;
+  case 8192256:
+  case 8192257:
+    deviceClass = "circle";
+    deviceName = "Cheetah";
+    break;
   case 418:
   case 419:
     deviceName = "T-Rex 2";
