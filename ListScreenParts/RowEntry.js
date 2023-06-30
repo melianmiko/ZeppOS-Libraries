@@ -68,17 +68,6 @@ export class RowEntry extends CardEntry {
 			text_size: this.rowConfig.fontSize,
 			text_width: this.textWidth
 		});
-        return Math.max(this.baseRowHeight, height + 36);
+        return Math.max(this.screen.baseRowHeight, height + 36);
     }
-
-	get baseRowHeight() {
-		if(this.screen.fontSize !== this.screen._brh_lastheight) {
-			this.screen._brh_lastheight = this.screen.fontSize
-			this.screen._brh_cached = hmUI.getTextLayout(" ", {
-				text_size: this.screen.fontSize,
-				text_width: 96,
-			}).height + 36;
-		}
-		return this.screen._brh_cached;
-	}
 }

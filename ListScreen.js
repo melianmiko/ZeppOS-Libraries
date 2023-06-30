@@ -193,4 +193,15 @@ export class ListScreen {
 		this.entries.push(data);
 		this.positionY += data.viewHeight;
 	}
+
+	get baseRowHeight() {
+		if(this.fontSize !== this._brh_lastheight) {
+			this._brh_lastheight = this.fontSize
+			this._brh_cached = hmUI.getTextLayout(" ", {
+				text_size: this.fontSize,
+				text_width: 96,
+			}).height + 36;
+		}
+		return this._brh_cached;
+	}
 }
