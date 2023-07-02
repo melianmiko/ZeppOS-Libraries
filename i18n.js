@@ -5,6 +5,10 @@ const preferredLang = [
 ];
 const strings = {};
 
+export function setPreferedLanguage(val) {
+  preferredLang[0] = val;
+}
+
 export function listTranslations() {
   return strings.name;
 }
@@ -25,7 +29,6 @@ export function loadLocale(code, data) {
         strings[key][code] = data[key];
     }
 }
-
 
 export function t(key) {
   if(!strings[key]) return key;
