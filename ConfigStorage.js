@@ -1,8 +1,8 @@
 import { Path } from "./Path";
 
 export class ConfigStorage {
-  constructor(file=null) {
-    this.data = {};
+  constructor(file=null, defaults=null) {
+    this.data = defaults !== null ? defaults : {};
 
     if(file !== null) {
       this.file = file;
