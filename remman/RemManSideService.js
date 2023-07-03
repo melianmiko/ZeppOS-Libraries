@@ -1,5 +1,5 @@
 export class RemManSideService {
-  constructor(messageBuilder, server="https://zepp.mmk.pw") {
+  constructor(messageBuilder, server="https://zepp.mmk.pw/zf") {
     this.state = "closed";
     this.server = server;
     this.counter = 0;
