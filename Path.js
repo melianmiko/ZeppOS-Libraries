@@ -144,7 +144,7 @@ export class Path {
     if(this.isFile()) {
       this.copy(destEntry);
     } else {
-      dest.mkdir();
+      destEntry.mkdir();
       for(const file of this.list()[0]) {
         this.get(file).copyTree(destEntry.get(file));
       }
