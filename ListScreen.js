@@ -136,7 +136,7 @@ export class ListScreen {
 		return row;
 	}
 
-	inage(config) {
+	image(config) {
 		const card = this.card({height: config.height + 8, background: 0});
 		card.image = card.group.createWidget(hmUI.align.IMG, {
 			x: 0,
