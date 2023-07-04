@@ -63,6 +63,7 @@ export class DataFieldEntry extends CardEntry {
 			y: this.oneLine ? 0 : 32,
 			w: this.textWidth,
 			h: this.rowViewHeight - (this.oneLine ? 0 : 32),
+            align_h: this.oneLine ? hmUI.align.RIGHT : hmUI.align.LEFT,
 			align_v: hmUI.align.CENTER_V,
 			text_style: hmUI.text_style.WRAP,
 			text_size: this.rowConfig.fontSize,

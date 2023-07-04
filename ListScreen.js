@@ -132,9 +132,18 @@ export class ListScreen {
 			}
 		});
 
-		row.iconView.setProperty(hmUI.prop.SRC, 
-			value ? config.iconTrue : config.iconFalse);
+		row.iconView.setProperty(hmUI.prop.SRC, value ? config.iconTrue : config.iconFalse);
 		return row;
+	}
+
+	inage(config) {
+		const card = this.card({height: config.height + 8, background: 0});
+		card.image = card.group.createWidget(hmUI.align.IMG, {
+			x: 0,
+			y: 0,
+			src: config.src
+		});
+		return card;
 	}
 
 	toggleGroup(config) {
@@ -168,7 +177,6 @@ export class ListScreen {
 	field(userConfig) {
 		return this._classBasedEntry(DataFieldEntry, userConfig);
 	}
-
 
 	card(userConfig) {
 		return this._classBasedEntry(CardEntry, userConfig);
