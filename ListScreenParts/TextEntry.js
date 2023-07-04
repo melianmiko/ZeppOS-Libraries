@@ -25,6 +25,12 @@ export class TextEntry {
         this.widget.setProperty(hmUI.prop.MORE, this._widgetConfig);
     }
 
+    setText(text) {
+        this.config.text = text;
+        this.widget.setProperty(hmUI.prop.MORE, this._widgetConfig);
+        this.screen.onHeightChange(this);
+    }
+
     get _widgetConfig() {
 		const textWidth = WIDGET_WIDTH - 8;
         return {

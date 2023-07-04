@@ -2,10 +2,16 @@ import { ListScreen } from "../ListScreen";
 import { SCREEN_WIDTH, SCREEN_HEIGHT } from "../UiParams";
 
 export class RemManPage extends ListScreen {
-  constructor(messageBuilder, userURL="https://zepp.mmk.pw/zf") {
+  constructor(messageBuilder, handler, userURL="https://zepp.mmk.pw/zf") {
     super()
     this.messageBuilder = messageBuilder;
     this.userURL = userURL;
+    this.handler = handler;
+
+    if(handler) {
+      handler.onError = (e) => this.log.setText(String(e));
+      handler.onPackageLog = (e) => this.log2.setText(String(e));
+    }
   }
 
   onConnect() {
@@ -13,6 +19,7 @@ export class RemManPage extends ListScreen {
       remManSetState: "ready"
     }).then((resp) => {
       this.buildConnectionUI(resp.code);
+      this.onError("No errors");
     })
   }
 
@@ -52,6 +59,15 @@ export class RemManPage extends ListScreen {
     this.headline("Notices");
     this.text({text: "Do not turn off device screen until using remote manager."});
     this.text({text: "Recomend to keep phone screen on too, for faster data transfering."})
+
+    this.headline("Error log:");
+    this.log = this.text({
+      text: "..."
+    });
+    this.headline("Info log:");
+    this.log2 = this.text({
+      text: "..."
+    });
     this.offset();
   }
 

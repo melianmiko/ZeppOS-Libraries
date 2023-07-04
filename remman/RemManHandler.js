@@ -10,28 +10,35 @@ export class RemManHandler {
   }
 
   onRequest(ctx, data) {
-    if(typeof data !== "string") return;
+    if(typeof data !== "string") {
+      this.onPackageLog("Ignore package, NotAString");
+    }
 
     try {
       this.handle(ctx, data);
     } catch(e) {
-      console.log(e);
+      this.onError(e);
+      ctx.response({
+        error: String(e)
+      })
     }
   }
 
+  onError(e) {
+    hmUI.showToast({text: String(e)});
+  }
+
+  onPackageLog(e) {}
+
   handle(ctx, data) {
     const request = JSON.parse(LZString.decompressFromBase64(data));
+    this.onPackageLog(`Action: ${request.action}`);
 
-    try {
-      const response = this[request.action](request);
-      ctx.response({
-        data: LZString.compressToBase64(JSON.stringify(response))
-      });
-    } catch(e) {
-      ctx.response({
-        data: LZString.compressToBase64({"error": e})
-      });
-    }
+    const response = this[request.action](request);
+    ctx.response({
+      data: LZString.compressToBase64(JSON.stringify(response))
+    });
+    this.onPackageLog(`OK: ${request.action}`);
   }
 
   hello(request) {
@@ -40,6 +47,11 @@ export class RemManHandler {
 
   stat(request) {
     return this._statPath(request.path);
+  }
+
+  mkdir(request) {
+    this.basePath.get(request.path).mkdir();
+    return {"result": "ok"};
   }
 
   remove(request) {
