@@ -48,7 +48,7 @@ export class DataFieldEntry extends CardEntry {
         return {
             x: ICON_SIZE_SMALL / 2,
             y: 8,
-            w: this.oneLine ? 120 : this.textWidth,
+            w: this.oneLine ? 140 : this.textWidth,
             h: 24,
             align_v: hmUI.align.CENTER_V,
             text_size: this.rowConfig.fontSize - 4,
@@ -59,7 +59,7 @@ export class DataFieldEntry extends CardEntry {
 
     get _textViewConfig() {
         return {
-			x: ICON_SIZE_SMALL / 2 + (this.oneLine ? 120 : 0),
+			x: ICON_SIZE_SMALL / 2 + (this.oneLine ? 140 : 0),
 			y: this.oneLine ? 0 : 32,
 			w: this.textWidth,
 			h: this.rowViewHeight - (this.oneLine ? 0 : 32),
@@ -73,7 +73,7 @@ export class DataFieldEntry extends CardEntry {
 
     get textWidth() {
         const baseWidth = (this.config.width ? this.config.width : WIDGET_WIDTH) - (ICON_SIZE_SMALL / 2);
-		return baseWidth - (this.oneLine ? 120 : 8);
+		return baseWidth - (this.oneLine ? 140 : 8);
     }
 
     get rowViewHeight() {
