@@ -2,6 +2,21 @@ import {ListScreen} from "../../../ListScreen";
 
 class TestScreen extends ListScreen {
   start() {
+    this.field({
+      headline: "Field",
+      text: "Hello, world",
+    })
+    const f = this.field({
+      headline: "Field",
+      text: "Hello, world",
+      callback: () => {
+        f.setText("sus sus sus sus sus sus sus sus sus sus ")
+      }
+    })
+    this.field({
+      headline: "Field",
+      text: "Hello, world world world world world world world ",
+    })
     this.row({
       text: "Row 1",
       callback: (card, event) => {

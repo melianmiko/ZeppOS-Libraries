@@ -8,6 +8,7 @@ import {
 } from "./UiParams";
 import {CardEntry} from "./ListScreenParts/CardEntry";
 import {RowEntry} from "./ListScreenParts/RowEntry";
+import {DataFieldEntry} from "./ListScreenParts/DataFieldEntry";
 import {TextEntry} from "./ListScreenParts/TextEntry";
 
 
@@ -162,6 +163,10 @@ export class ListScreen {
 
 	row(userConfig) {
 		return this._classBasedEntry(RowEntry, userConfig);
+	}
+
+	field(userConfig) {
+		return this._classBasedEntry(DataFieldEntry, userConfig);
 	}
 
 
