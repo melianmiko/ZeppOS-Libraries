@@ -8,17 +8,11 @@ export class RemManSideService {
   }
 
   onRequest(ctx, request) {
-    if(!request.remManSetState && !request.remManPing) return;
-    this.counter = 0;
+    if(request.package != "remman") return;
 
-    if(request.remManSetState == "ready") {
-      console.log(`================ ${request.remManSetState} ===================`);
-      this.init(ctx);
-    } else if(request.remManSetState) {
-      this.state = request.remManSetState;
-      ctx.response({
-        data: []
-      });
+    switch(request.action) {
+      case "init":
+        return this.init(ctx);
     }
   }
 
@@ -29,41 +23,49 @@ export class RemManSideService {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: "{}"
+      body: JSON.stringify({
+        uuid: settings.settingsStorage.getItem("remman_uuid")
+      })
     });
     const data = typeof res.body === 'string' ? JSON.parse(res.body) : res.body;
 
     this.uuid = data.uuid;
     this.code = data.code;
+    settings.settingsStorage.setItem("remman_uuid", this.uuid);
 
     console.log("Ready to accept requests");
     this.state = "ready";
-    this.counter = 0;
     ctx.response({
-      data: {"code": this.code}
+      data
     });
   }
 
   async performCheckServer() {
-    if(this.state != "ready" || this.counter > 10) return;
+    if(this.state != "ready") throw new ValueError("nodevice");
 
-    const res = await fetch(`${this.server}/device/${this.uuid}/zepp_status`);
-    this.counter++;
+    console.log("PING'ing device app...");
+    await this.messageBuilder.request("ping");
+    console.log("App ready, waiting for request from server...");
 
+    const res = await fetch(`${this.server}/device/${this.uuid}/request`);
     if(res.status == 404) {
       console.log("Drop UUID: server removed!");
-      this.uuid = null;
+      this.state = "closed";
       return;
     }
+
     const data = typeof res.body === 'string' ?  JSON.parse(res.body) : res.body
     if(data.status == "ready") 
       return;
 
-    console.log(`Handle task ${data.request}`);
-    const output = await this.messageBuilder.request(data.request);
+    console.log(`Handle task ${data.data}`);
+    const output = await this.messageBuilder.request(data.data);
     fetch({
-      url: `${this.server}/device/${this.uuid}/zepp_respond`,
+      url: `${this.server}/device/${this.uuid}/response`,
       method: "POST",
+      headers: {
+        "Content-Type": "text/plain"
+      },
       body: output
     });
   }
@@ -71,10 +73,9 @@ export class RemManSideService {
   startCheckServerLoop() {
     const ctx = this;
     this.performCheckServer().then(() => {
-      setTimeout(() => {
-        ctx.startCheckServerLoop();
-      }, 2000);
+      ctx.startCheckServerLoop();
     }).catch((e) => {
+      console.log("ERROR", e);
       setTimeout(() => {
         ctx.startCheckServerLoop();
       }, 2000);

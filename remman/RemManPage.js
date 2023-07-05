@@ -16,9 +16,10 @@ export class RemManPage extends ListScreen {
 
   onConnect() {
     this.messageBuilder.request({
-      remManSetState: "ready"
+      package: "remman",
+      action: "init"
     }).then((resp) => {
-      this.buildConnectionUI(resp.code);
+      this.buildConnectionUI(resp.code, resp.uuid);
       this.onError("No errors");
     })
   }
@@ -40,7 +41,7 @@ export class RemManPage extends ListScreen {
     })
   }
 
-  buildConnectionUI(code) {
+  buildConnectionUI(code, uuid) {
     hmUI.deleteWidget(this.loading);
 
     hmApp.registerGestureEvent((e) => this.handleGesture(e));
@@ -66,7 +67,7 @@ export class RemManPage extends ListScreen {
     });
     this.headline("Info log:");
     this.log2 = this.text({
-      text: "..."
+      text: `Started with UUID: ${uuid}`
     });
     this.offset();
   }

@@ -31,6 +31,7 @@ export class RemManHandler {
   onPackageLog(e) {}
 
   handle(ctx, data) {
+    if(data == "ping") return ctx.response({data: "ok"});
     const request = JSON.parse(LZString.decompressFromBase64(data));
     this.onPackageLog(`Action: ${request.action}`);
 
