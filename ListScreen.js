@@ -138,7 +138,7 @@ export class ListScreen {
 
 	image(config) {
 		const card = this.card({height: config.height + 8, color: 0});
-		card.image = card.group.createWidget(hmUI.align.IMG, {
+		card.image = card.group.createWidget(hmUI.widget.IMG, {
 			x: 0,
 			y: 0,
 			src: config.src
