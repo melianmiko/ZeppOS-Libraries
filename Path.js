@@ -294,7 +294,7 @@ export class FsTools {
     if(this.fsUnitCfg === undefined)
       this.fsUnitCfg = hmFS.SysProGetBool("mmk_tb_fs_unit");
 
-    const options = this.fsUnitCfg ? ["B", "KiB", "MiB"] : ["B", "KB", "MB"];
+    const options = this.fsUnitCfg ? ["B", "KiB", "MiB", "GiB"] : ["B", "KB", "MB", "GB"];
     const base = this.fsUnitCfg ? 1024 : 1000;
 
     let curr = 0;
