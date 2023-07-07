@@ -175,6 +175,8 @@ export class BaseAboutScreen {
   }
 
   drawInfo() {
+    const fontMpx = 1.2;
+
     for (let [name, info] of this.infoRows) {
       const metrics = hmUI.getTextLayout(name, {
         text_width: WIDGET_WIDTH,
@@ -185,7 +187,7 @@ export class BaseAboutScreen {
         x: SCREEN_MARGIN_X,
         y: this.posY,
         w: WIDGET_WIDTH,
-        h: 24,
+        h: BASE_FONT_SIZE * fontMpx,
         text_size: BASE_FONT_SIZE - 4,
         color: 0xAAAAAA,
         text: info,
@@ -194,7 +196,7 @@ export class BaseAboutScreen {
 
       hmUI.createWidget(hmUI.widget.TEXT, {
         x: SCREEN_MARGIN_X,
-        y: this.posY + 24,
+        y: this.posY + BASE_FONT_SIZE * fontMpx,
         w: WIDGET_WIDTH,
         h: metrics.height + 24,
         text_size: BASE_FONT_SIZE,
@@ -204,7 +206,7 @@ export class BaseAboutScreen {
         align_h: hmUI.align.CENTER_H
       });
 
-      this.posY += metrics.height + 32;
+      this.posY += metrics.height + BASE_FONT_SIZE * fontMpx;
     }
 
     hmUI.createWidget(hmUI.widget.IMG, {
