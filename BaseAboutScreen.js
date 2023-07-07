@@ -24,6 +24,8 @@ export class BaseAboutScreen {
       ["melianmiko", "Developer"]
     ];
 
+    this.iconSize = 80;
+
     this.donateText = "";
     this.donateUrl = null;
 
@@ -37,7 +39,7 @@ export class BaseAboutScreen {
   }
 
   drawBasement() {
-    const iconSize = IS_MI_BAND_7 ? 100 : 80;
+    const iconSize = IS_MI_BAND_7 ? 100 : this.iconSize;
     const lineHeight = Math.floor(BASE_FONT_SIZE * 2);
 
     let clickCount = 5;
