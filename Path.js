@@ -1,5 +1,6 @@
 const deviceID = hmSetting.getDeviceInfo().deviceName;
 export const isMiBand7 = deviceID === "Xiaomi Smart Band 7";
+const appContext = getApp();
 
 // This shit works on Mi Band 7 and both Amazfit =)
 export class Path {
@@ -194,14 +195,27 @@ export class Path {
 }
 
 export class FsTools {
+  static getAppTags() {
+    if(FsTools.appTags) return FsTools.appTags;
+
+    try {
+      const [id, type] = appContext._options.globalData.appTags;
+      return [id, type];
+    } catch(_) {
+      hmUI.showToast({text: String(_)});
+      const packageInfo = hmApp.packageInfo();
+      return [packageInfo.appId, packageInfo.type];
+    }
+  }
+
   static getAppLocation() {
-    if (FsTools.overrideAppPage) {
-      return FsTools.overrideAppPage;
+    if (!FsTools.cachedAppLocation) {
+      const [id, type] = FsTools.getAppTags();
+      const idn = id.toString(16).padStart(8, "0").toUpperCase();
+      FsTools.cachedAppLocation = [`js_${type}s`, idn];
     }
 
-    const packageInfo = hmApp.packageInfo();
-    const idn = packageInfo.appId.toString(16).padStart(8, "0").toUpperCase();
-    return [`js_${packageInfo.type}s`, idn];
+    return FsTools.cachedAppLocation
   }
 
   static fullAssetPath(path) {

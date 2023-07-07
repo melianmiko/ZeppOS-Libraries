@@ -141,6 +141,9 @@ export class ListScreen {
 		card.image = card.group.createWidget(hmUI.widget.IMG, {
 			x: 0,
 			y: 0,
+			w: config.width,
+			h: config.height,
+			auto_scale: config.auto_scale,
 			src: config.src
 		});
 		return card;

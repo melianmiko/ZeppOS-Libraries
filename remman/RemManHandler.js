@@ -10,10 +10,6 @@ export class RemManHandler {
   }
 
   onRequest(ctx, data) {
-    if(typeof data !== "string") {
-      this.onPackageLog("Ignore package, NotAString");
-    }
-
     try {
       this.handle(ctx, data);
     } catch(e) {
@@ -31,18 +27,18 @@ export class RemManHandler {
   onPackageLog(e) {}
 
   handle(ctx, data) {
-    if(data == "ping") return ctx.response({data: "ok"});
+    if(data === "ping") return ctx.response({data: "ok"});
     const request = JSON.parse(LZString.decompressFromBase64(data));
-    this.onPackageLog(`Action: ${request.action}`);
 
     const response = this[request.action](request);
+    if(request.tag) response.tag = request.tag;
     ctx.response({
       data: LZString.compressToBase64(JSON.stringify(response))
     });
-    this.onPackageLog(`OK: ${request.action}`);
+    this.onPackageLog(request.action);
   }
 
-  hello(request) {
+  hello() {
     return this.clientConfig;
   }
 
@@ -92,7 +88,7 @@ export class RemManHandler {
       view[i / 2] = parseInt(data[i] + data[i + 1], 16);
     }
 
-    if(offset == 0) entry.remove();
+    if(offset === 0) entry.remove();
     entry.open(hmFS.O_WRONLY | hmFS.O_CREAT);
     entry.seek(offset);
     entry.write(view.buffer, 0, view.length);
@@ -104,7 +100,7 @@ export class RemManHandler {
   }
 
   _statPath(path, children = true) {
-    if(path[0] == "/") path = path.substring(1);
+    if(path[0] === "/") path = path.substring(1);
 
     const entry = this.basePath.get(path);
     console.log(entry.absolutePath)
