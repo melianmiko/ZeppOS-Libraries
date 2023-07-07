@@ -290,12 +290,9 @@ export class FsTools {
     return FsTools.decodeUtf8(array)[0];
   }
 
-  static printBytes(val) {
-    if(this.fsUnitCfg === undefined)
-      this.fsUnitCfg = hmFS.SysProGetBool("mmk_tb_fs_unit");
-
-    const options = this.fsUnitCfg ? ["B", "KiB", "MiB", "GiB"] : ["B", "KB", "MB", "GB"];
-    const base = this.fsUnitCfg ? 1024 : 1000;
+  static printBytes(val, base2=false) {
+    const options = base2 ? ["B", "KiB", "MiB", "GiB"] : ["B", "KB", "MB", "GB"];
+    const base = base2 ? 1024 : 1000;
 
     let curr = 0;
     while (val > 800 && curr < options.length) {

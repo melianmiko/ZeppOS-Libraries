@@ -1,10 +1,9 @@
-import { SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_MARGIN_X, SCREEN_MARGIN_Y } from "../UiParams";
+import { WIDGET_WIDTH, SCREEN_HEIGHT, SCREEN_MARGIN_X, SCREEN_MARGIN_Y } from "../UiParams";
 
 export class RemManPage {
   constructor(messageBuilder, handler, userURL="zepp.mmk.pw/zf", t=null) {
     this.messageBuilder = messageBuilder;
     this.userURL = userURL;
-    this.handler = handler;
     this.widgets = [];
     this.userBrightness = null;
 
@@ -26,7 +25,6 @@ export class RemManPage {
       action: "init"
     }).then((resp) => {
       this.startConnectingUi(resp.code, resp.uuid);
-      this.onError("No errors");
     })
   }
 
@@ -59,9 +57,9 @@ export class RemManPage {
     // Start loading screen
     this.clear();
     this.widgets.push(hmUI.createWidget(hmUI.widget.TEXT, {
-      x: 0,
+      x: SCREEN_MARGIN_X,
       y: 0, 
-      w: SCREEN_WIDTH,
+      w: WIDGET_WIDTH,
       h: SCREEN_HEIGHT,
       align_h: hmUI.align.CENTER_H,
       align_v: hmUI.align.CENTER_V,
@@ -74,9 +72,9 @@ export class RemManPage {
   startConnectingUi(code, uuid) {
     this.clear();
     this.widgets.push(hmUI.createWidget(hmUI.widget.TEXT, {
-      x: 0,
+      x: SCREEN_MARGIN_X,
       y: SCREEN_MARGIN_Y,
-      w: SCREEN_WIDTH,
+      w: WIDGET_WIDTH,
       align_h: hmUI.align.CENTER_H,
       h: 24,
       color: 0x999999,
@@ -84,9 +82,9 @@ export class RemManPage {
       text: this.gettext("Go to website"),
     }));
     this.widgets.push(hmUI.createWidget(hmUI.widget.TEXT, {
-      x: 0,
+      x: SCREEN_MARGIN_X,
       y: SCREEN_MARGIN_Y + 24,
-      w: SCREEN_WIDTH,
+      w: WIDGET_WIDTH,
       align_h: hmUI.align.CENTER_H,
       color: 0xFFFFFF,
       h: 28,
@@ -94,9 +92,9 @@ export class RemManPage {
       text: this.userURL,
     }));
     this.widgets.push(hmUI.createWidget(hmUI.widget.TEXT, {
-      x: 0,
+      x: SCREEN_MARGIN_X,
       y: SCREEN_MARGIN_Y + 52,
-      w: SCREEN_WIDTH,
+      w: WIDGET_WIDTH,
       align_h: hmUI.align.CENTER_H,
       text_style: hmUI.text_style.WRAP,
       h: 64,
@@ -105,9 +103,9 @@ export class RemManPage {
       text: this.gettext("and enter this code to access your files:"),
     }));
     this.widgets.push(hmUI.createWidget(hmUI.widget.TEXT, {
-      x: 0,
+      x: SCREEN_MARGIN_X,
       y: SCREEN_MARGIN_Y + 116,
-      w: SCREEN_WIDTH,
+      w: WIDGET_WIDTH,
       h: 42,
       align_h: hmUI.align.CENTER_H,
       color: 0xFFFFFF,
@@ -131,9 +129,9 @@ export class RemManPage {
 
     this.clear();
     hmUI.createWidget(hmUI.widget.TEXT, {
-      x: 0,
+      x: SCREEN_MARGIN_X,
       y: SCREEN_MARGIN_Y,
-      w: SCREEN_WIDTH,
+      w: WIDGET_WIDTH,
       align_h: hmUI.align.CENTER_H,
       align_v: hmUI.align.CENTER_V,
       text_style: hmUI.text_style.WRAP,
@@ -143,9 +141,9 @@ export class RemManPage {
       text: this.gettext("Connected, don't dim screen and leave application until using remote manager."),
     });
     this.log = hmUI.createWidget(hmUI.widget.TEXT, {
-      x: 0,
+      x: SCREEN_MARGIN_X,
       y: SCREEN_MARGIN_Y + 200,
-      w: SCREEN_WIDTH,
+      w: WIDGET_WIDTH,
       align_h: hmUI.align.CENTER_H,
       text_style: hmUI.text_style.WRAP,
       h: 72,
