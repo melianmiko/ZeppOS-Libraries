@@ -112,11 +112,6 @@ export class RemManPage {
       text_size: 32,
       text: String(code)
     }))
-
-    this.headline("Error log:");
-    this.log = this.text({
-      text: "..."
-    });
   }
 
   startStatus() {
