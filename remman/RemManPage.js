@@ -10,7 +10,7 @@ export class RemManPage {
     if(t) this.gettext = t;
 
     if(handler) {
-      handler.onError = (e) => this.log.setText(String(e));
+      handler.onError = (e) => this.log.setProperty(hmUI.prop.TEXT, String(e));
       handler.onPackageLog = () => this.onPackageLog();
     }
   }
