@@ -28,11 +28,26 @@ export function handleFetchRequest(ctx, request) {
 
     console.log(request.method, request.url, request);
     fetch(request).then((res) => {
-        const data = typeof res.body === 'string' ? JSON.parse(res.body) : res.body;
+        let data = res.body;
+        if (typeof res.body === 'string') {
+            try {
+                data = JSON.parse(res.body);
+            } catch(e) {
+                data = null;
+            }
+        }
+
         ctx.response({
             data: {
-                status: data.status,
+                status: res.status,
                 json: data
+            }
+        })
+    }).catch(() => {
+        ctx.response({
+            data: {
+                status: 0,
+                json: null
             }
         })
     })
