@@ -202,7 +202,6 @@ export class FsTools {
       const [id, type] = appContext._options.globalData.appTags;
       return [id, type];
     } catch(_) {
-      hmUI.showToast({text: String(_)});
       const packageInfo = hmApp.packageInfo();
       return [packageInfo.appId, packageInfo.type];
     }
