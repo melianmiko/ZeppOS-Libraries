@@ -14,7 +14,7 @@ export function clientFetch(url, params) {
     return messageBuilder.request({
         package: "fetch_fwd",
         data: fetchData
-    }, {timeout: 12000}).then((r) => {
+    }, {timeout: 120000}).then((r) => {
         return {
             status: r.status,
             json: () => Promise.resolve(r.json),
@@ -37,6 +37,7 @@ export function handleFetchRequest(ctx, request) {
             }
         }
 
+        console.log(res.status, data);
         ctx.response({
             data: {
                 status: res.status,

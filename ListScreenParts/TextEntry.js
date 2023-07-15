@@ -7,6 +7,9 @@ export class TextEntry {
         this.config = {
 			color: 0xFFFFFF,
 			fontSize: this.screen.fontSize,
+            align: hmUI.align.LEFT,
+            topOffset: 0,
+            bottomOffset: 0,
             card: {},
 			...userConfig
         }
@@ -35,10 +38,11 @@ export class TextEntry {
 		const textWidth = WIDGET_WIDTH - 8;
         return {
 			x: SCREEN_MARGIN_X + 4,
-			y: this.positionY,
+			y: this.positionY + this.config.topOffset,
 			w: textWidth,
 			h: this.viewHeight,
 			align_v: hmUI.align.CENTER_V,
+            align_h: this.config.align,
 			text_style: hmUI.text_style.WRAP,
 			text_size: this.config.fontSize,
 			color: this.config.color,
@@ -52,6 +56,6 @@ export class TextEntry {
 			text_size: this.config.fontSize,
 			text_width: textWidth
 		});
-        return height;
+        return height + this.config.bottomOffset + this.config.topOffset;
     }
 }
