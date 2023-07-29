@@ -17,7 +17,10 @@ export class RowEntry extends CardEntry {
         super._init();
 
 		this.textView = this.group.createWidget(hmUI.widget.TEXT, this._textViewConfig);
-		this.iconView = this.group.createWidget(hmUI.widget.IMG, this._iconViewConfig)
+		this.iconView = this.group.createWidget(hmUI.widget.IMG, this._iconViewConfig);
+
+        if(this.rowConfig.description)
+            this.descView = this.group.createWidget(hmUI.widget.TEXT, this._descrViewConfig);
     }
 
     _postInit() {
@@ -37,6 +40,8 @@ export class RowEntry extends CardEntry {
         super.setHeight(height);
         this.textView.setProperty(hmUI.prop.MORE, this._textViewConfig);
         this.iconView.setProperty(hmUI.prop.MORE, this._iconViewConfig);
+        if(this.rowConfig.description)
+            this.descView.setProperty(hmUI.prop.MORE, this._descrViewConfig);
     }
 
     get _iconViewConfig() {
@@ -50,10 +55,10 @@ export class RowEntry extends CardEntry {
     get _textViewConfig() {
         return {
 			x: ICON_SIZE_SMALL * 2,
-			y: 0,
+			y: 18,
 			w: this.textWidth,
-			h: this.rowViewHeight,
-			align_v: hmUI.align.CENTER_V,
+			// h: this.rowViewHeight - 36,
+			// align_v: hmUI.align.CENTER_V,
 			text_style: hmUI.text_style.WRAP,
 			text_size: this.rowConfig.fontSize,
 			color: this.rowConfig.color,
@@ -61,15 +66,41 @@ export class RowEntry extends CardEntry {
 		}
     }
 
+   get _descrViewConfig() {
+        return {
+            x: ICON_SIZE_SMALL * 2,
+            y: 18 + this.textHeight,
+            w: this.textWidth,
+            // h: this.rowViewHeight - 36,
+            text_style: hmUI.text_style.WRAP,
+            text_size: this.rowConfig.fontSize - 2,
+            color: 0x999999,
+            text: this.rowConfig.description
+        }
+    }
+
     get textWidth() {
 		return (this.config.width ? this.config.width : WIDGET_WIDTH) - (ICON_SIZE_SMALL * 2) - 8;
     }
 
+    get textHeight() {
+        const { height } = hmUI.getTextLayout(this.rowConfig.text, {
+            text_size: this.rowConfig.fontSize,
+            text_width: this.textWidth
+        });
+        return height;
+    }
+
+    get descriptionHeight() {
+        if(!this.rowConfig.description) return 0;
+        const { height } = hmUI.getTextLayout(this.rowConfig.description, {
+            text_size: this.rowConfig.fontSize - 2,
+            text_width: this.textWidth
+        });
+        return height;
+    }
+
     get rowViewHeight() {
-		const { height } = hmUI.getTextLayout(this.rowConfig.text, {
-			text_size: this.rowConfig.fontSize,
-			text_width: this.textWidth
-		});
-        return Math.max(this.screen.baseRowHeight, height + 36);
+        return Math.max(this.screen.baseRowHeight, this.textHeight + this.descriptionHeight + 36);
     }
 }

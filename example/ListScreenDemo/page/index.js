@@ -32,6 +32,7 @@ class TestScreen extends ListScreen {
 
     const textRow = this.row({
       text: "Row 2",
+      description: "Description! AAAA AAAA AAAA AAAA AAAA AAAA AAAA AAAA AAAA AAAA AAAA AAAA ",
       callback: () => {
         textRow.setText("Sus Sus Sus Sus Sus Sus Sus Sus Sus Sus Sus Sus Sus ")
       }

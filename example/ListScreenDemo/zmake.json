@@ -1,4 +1,4 @@
 {
 	"esbuild": true,
-	"zeus_compat": true
+	"with_zeus_compat": true
 } 
