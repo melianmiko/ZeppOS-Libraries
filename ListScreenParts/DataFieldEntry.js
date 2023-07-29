@@ -49,7 +49,7 @@ export class DataFieldEntry extends CardEntry {
 
     get _headlineViewConfig() {
         return {
-            x: ICON_SIZE_SMALL / 2,
+            x: 0,
             y: 0,
             w: this.oneLine ? this.rowConfig.headlineWidth : this.textWidth,
             h: this.oneLine ? this.rowViewHeight : undefined,
@@ -63,7 +63,7 @@ export class DataFieldEntry extends CardEntry {
 
     get _textViewConfig() {
         return {
-			x: ICON_SIZE_SMALL / 2 + (this.oneLine ? this.rowConfig.headlineWidth : 0),
+			x: this.oneLine ? this.rowConfig.headlineWidth : 0,
 			y: this.oneLine ? 0 : this.headHeight,
 			w: this.textWidth,
             h: this.oneLine ? this.rowViewHeight : undefined,
