@@ -8,9 +8,11 @@ export class DataFieldEntry extends CardEntry {
 			color: 0xFFFFFF,
             headlineColor: 0x999999,
 			fontSize: this.screen.fontSize,
+            headlineFontSize: this.screen.fontSize - 2,
             headline: "",
             text: "",
             allowOneLine: true,
+            headlineWidth: 140,
             ...config,
         };
 
@@ -42,16 +44,18 @@ export class DataFieldEntry extends CardEntry {
     _text_setHeight(height) {
         super.setHeight(height);
         this.textView.setProperty(hmUI.prop.MORE, this._textViewConfig);
+        this.headlineView.setProperty(hmUI.prop.MORE, this._headlineViewConfig);
     }
 
     get _headlineViewConfig() {
         return {
             x: ICON_SIZE_SMALL / 2,
-            y: 8,
-            w: this.oneLine ? 140 : this.textWidth,
-            h: 24,
+            y: 0,
+            w: this.oneLine ? this.rowConfig.headlineWidth : this.textWidth,
+            h: this.oneLine ? this.rowViewHeight : undefined,
             align_v: hmUI.align.CENTER_V,
-            text_size: this.rowConfig.fontSize - 4,
+            text_style: hmUI.text_style.WRAP,
+            text_size: this.rowConfig.headlineFontSize,
             color: this.rowConfig.headlineColor,
             text: this.rowConfig.headline
 		}
@@ -59,10 +63,10 @@ export class DataFieldEntry extends CardEntry {
 
     get _textViewConfig() {
         return {
-			x: ICON_SIZE_SMALL / 2 + (this.oneLine ? 140 : 0),
-			y: this.oneLine ? 0 : 32,
+			x: ICON_SIZE_SMALL / 2 + (this.oneLine ? this.rowConfig.headlineWidth : 0),
+			y: this.oneLine ? 0 : this.headHeight,
 			w: this.textWidth,
-			h: this.rowViewHeight - (this.oneLine ? 0 : 32),
+            h: this.oneLine ? this.rowViewHeight : undefined,
             align_h: this.oneLine ? hmUI.align.RIGHT : hmUI.align.LEFT,
 			align_v: hmUI.align.CENTER_V,
 			text_style: hmUI.text_style.WRAP,
@@ -72,16 +76,37 @@ export class DataFieldEntry extends CardEntry {
 		}
     }
 
+    get headWidth() {
+        const baseWidth = (this.config.width ? this.config.width : WIDGET_WIDTH) - (ICON_SIZE_SMALL / 2);
+        if(this.oneLine) return this.rowConfig.headlineWidth;
+        return baseWidth;
+    }
+
     get textWidth() {
         const baseWidth = (this.config.width ? this.config.width : WIDGET_WIDTH) - (ICON_SIZE_SMALL / 2);
-		return baseWidth - (this.oneLine ? 140 : 8);
+        if(this.oneLine) return baseWidth - this.rowConfig.headlineWidth;
+        return baseWidth;
+    }
+
+    get textHeight() {
+        const textMetrics = hmUI.getTextLayout(this.rowConfig.text, {
+            text_size: this.rowConfig.fontSize,
+            text_width: this.textWidth
+        });
+        return textMetrics.height;
+    }
+
+    get headHeight() {
+        const headMetrics = hmUI.getTextLayout(this.rowConfig.headline, {
+            text_size: this.rowConfig.headlineFontSize,
+            text_width: this.headWidth
+        });
+        return headMetrics.height;
     }
 
     get rowViewHeight() {
-		const { height } = hmUI.getTextLayout(this.rowConfig.text, {
-			text_size: this.rowConfig.fontSize,
-			text_width: this.textWidth
-		});
-        return height + (this.oneLine ? 8 : 36);
+        console.log(this.textHeight, this.headHeight);
+        if(this.oneLine) return Math.max(this.textHeight, this.headHeight) + 8;
+        return this.textHeight + this.headHeight + 8;
     }
 }

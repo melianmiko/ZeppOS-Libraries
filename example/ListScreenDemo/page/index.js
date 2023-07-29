@@ -3,7 +3,8 @@ import {ListScreen} from "../../../ListScreen";
 class TestScreen extends ListScreen {
   start() {
     this.field({
-      headline: "Field",
+      headline: "Field Field Field Field Field Field Field Field",
+      headlineWidth: 200,
       text: "Hello, world",
     })
     const f = this.field({
