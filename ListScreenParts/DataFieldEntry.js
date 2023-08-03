@@ -16,7 +16,8 @@ export class DataFieldEntry extends CardEntry {
             ...config,
         };
 
-        this.oneLine = this.rowConfig.allowOneLine && WIDGET_WIDTH >= 300;
+        // this.oneLine = this.rowConfig.allowOneLine && WIDGET_WIDTH >= 300;
+        this.oneLine = false;
         this.config.height = this.rowViewHeight;
     }
 
@@ -53,7 +54,7 @@ export class DataFieldEntry extends CardEntry {
             y: 0,
             w: this.oneLine ? this.rowConfig.headlineWidth : this.textWidth,
             h: this.oneLine ? this.rowViewHeight : undefined,
-            align_v: hmUI.align.CENTER_V,
+            align_v: this.oneLine ? hmUI.align.CENTER_V : undefined,
             text_style: hmUI.text_style.WRAP,
             text_size: this.rowConfig.headlineFontSize,
             color: this.rowConfig.headlineColor,
@@ -68,7 +69,7 @@ export class DataFieldEntry extends CardEntry {
 			w: this.textWidth,
             h: this.oneLine ? this.rowViewHeight : undefined,
             align_h: this.oneLine ? hmUI.align.RIGHT : hmUI.align.LEFT,
-			align_v: hmUI.align.CENTER_V,
+            align_v: this.oneLine ? hmUI.align.CENTER_V : undefined,
 			text_style: hmUI.text_style.WRAP,
 			text_size: this.rowConfig.fontSize,
 			color: this.rowConfig.color,
