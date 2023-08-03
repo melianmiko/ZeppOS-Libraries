@@ -16,8 +16,7 @@ export class DataFieldEntry extends CardEntry {
             ...config,
         };
 
-        // this.oneLine = this.rowConfig.allowOneLine && WIDGET_WIDTH >= 300;
-        this.oneLine = false;
+        this.oneLine = this.rowConfig.allowOneLine && WIDGET_WIDTH >= 300;
         this.config.height = this.rowViewHeight;
     }
 
