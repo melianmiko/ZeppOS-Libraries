@@ -84,6 +84,10 @@ switch(info.deviceSource) {
     deviceName = "Falcon";
     deviceClass = "circle";
     break;
+  case 8454401:
+    deviceName = "Bip 5";
+    deviceClass = "square";
+    break;
 }
 
 export { deviceName, deviceClass, isLowRamDevice };
