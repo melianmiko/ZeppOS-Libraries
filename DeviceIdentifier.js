@@ -1,7 +1,7 @@
 let info = hmSetting.getDeviceInfo();
 let deviceName = info.deviceName;
-let deviceClass = "";
-let isLowRamDevice = false;
+let deviceClass = info.screenShape === 1 ? "circle" : (info.width / info.height) > 0.6 ? "square" : "band" ;
+let isLowRamDevice = deviceClass === "band" ? true : false;
 
 // What the fuck, real device name didn't match with emulator?
 // Okay, then I'll use deviceSource
