@@ -1,5 +1,4 @@
 const preferredLang = [
-    hmFS.SysProGetChars("mmk_tb_lang"),
     DeviceRuntimeCore.HmUtils.getLanguage(),
     "en-US"
 ];
