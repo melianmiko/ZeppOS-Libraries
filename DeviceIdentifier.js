@@ -69,6 +69,10 @@ switch(info.deviceSource) {
     deviceName = "Cheetah Pro";
     deviceClass = "circle";
     break;
+  case 8257793:
+    deviceName = "Cheetah Square";
+    deviceClass = "square";
+    break;
   case 8192256:
   case 8192257:
     deviceClass = "circle";
