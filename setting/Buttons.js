@@ -36,6 +36,7 @@ export function FloatingActionButton(icon, onClick, offset=0) {
             position: "fixed",
             bottom: 24 + offset,
             right: 24,
+            zIndex: 40,
         }
     }, [
         View({

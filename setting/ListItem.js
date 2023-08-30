@@ -23,7 +23,8 @@ export function ListItemText(title, description) {
     return View({
         style: {
             flex: "1",
-            margin: "8px"
+            margin: "8px",
+            width: "0",
         }
     }, [
         Text({
