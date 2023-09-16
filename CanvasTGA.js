@@ -131,7 +131,7 @@ export class CanvasTGA {
 			console.log(this.palette);
 			return;
 		}
-		const [iw, ih] = this._tgaWidth;
+		const [iw, ih] = this._tgaSize;
 
 		for(let i = 0; i < h; i++) {
 			for(let j = 0; j < w; j++) {
@@ -143,12 +143,12 @@ export class CanvasTGA {
 	}
 
 	_getPixel(x, y) {
-		const offset = 1088 + (y * this._size[0]) + x;
+		const offset = 1088 + (y * this._tgaWidth) + x;
 		return this.data[offset];
 	}
 
 	_putPixel(x, y, value) {
-		const offset = 1088 + (y * this._size[0]) + x;
+		const offset = 1088 + (y * this._tgaWidth) + x;
 		this.data[offset] = value;
 	}
 
