@@ -27,8 +27,13 @@ export class Path {
   }
 
   get(path) {
-    const newPath = this.path === "/" ? path : `${this.path}/${path}`;
-    return new Path(this.scope, newPath);
+    if(path == "") {
+      return this;
+    } else if (this.path === "/" || this.path === ".") {
+      return new Path(this.scope, path);
+    } else {
+      return new Path(this.scope, `${this.path}/${path}`);
+    }
   }
 
   resolve() {
