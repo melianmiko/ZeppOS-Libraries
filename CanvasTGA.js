@@ -1,3 +1,5 @@
+import { deviceChipset } from "./DeviceIdentifier";
+
 export class CanvasTGA {
 	constructor(width, height){
 		this.fillStyle = "";
@@ -6,6 +8,7 @@ export class CanvasTGA {
 		this.contextOffsetY = 0;
 
 		this._size = [width, height];
+		this._tgaWidth = width;
 		this._reinit();
 		this.addPalette({
 			"white": 0xffffff,
@@ -47,17 +50,32 @@ export class CanvasTGA {
 		return metrics;
 	}
 
+	_getColorRGBA(v) {
+		switch(deviceChipset) {
+			case "dialog":
+				return [
+					v & 0xFF,
+					(v && 0xFF00) >> 8,
+					(v && 0xFF0000) >> 16,
+					255
+				];
+			case "nxp":
+			default:
+				return [
+					(v && 0xFF0000) >> 16,
+					(v && 0xFF00) >> 8,
+					v & 0xFF,
+					255
+				];
+		}
+	}
+
 	addPalette(data) {
 		let i = 0;
 
 		for(let name in data) {
 			const v = data[name];
-			const col = [
-				v & 0xFF,
-				(v && 0xFF00) >> 8,
-				(v && 0xFF0000) >> 16,
-				255
-			];
+			const col = this._getColorRGBA(v);
 			this.palette[i] = name;
 			this.data.set(col, 64 + i * 4);
 			i++;
@@ -69,21 +87,28 @@ export class CanvasTGA {
 	_reinit() {
 		const width = this._size[0];
 		const height = this._size[1];
-		const dataSize = 64 + (4*256) + (width*height);
+
+		this._tgaWidth = width;
+		if(deviceChipset == "nxp") {
+			this._tgaWidth += 16 - (width % 16);
+		}
+
+		const dataSize = 64 + (4*256) + (this._tgaWidth*height);
+
 		this.data = new Uint8Array(dataSize);
 		this.data.set([
 			46, 1, 1, 0, 0, 0, 1, 0x20,
-			0, 0, 0, 0, width & 0xFF, width >> 8, height & 0xFF, height >> 8,
+			0, 0, 0, 0, this._tgaWidth & 0xFF, this._tgaWidth >> 8, height & 0xFF, height >> 8,
 			0x08, 0x20, 0x53, 0x4f, 0x4d, 0x48, width & 0xFF, width >> 8
 		]);
 
 		this.addPalette(this.currentPalette);
 
-		console.log("WARN reinit", this._size);
+		console.log("WARN reinit", this._size, this._tgaSize);
 	}
 
 	clearRect(x, y, w, h) {
-		const [iw, ih] = this._size;
+		const [iw, ih] = this._tgaSize;
 
 		for(let i = 0; i < h; i++) {
 			for(let j = 0; j < w; j++) {
@@ -106,7 +131,7 @@ export class CanvasTGA {
 			console.log(this.palette);
 			return;
 		}
-		const [iw, ih] = this._size;
+		const [iw, ih] = this._tgaWidth;
 
 		for(let i = 0; i < h; i++) {
 			for(let j = 0; j < w; j++) {
@@ -143,6 +168,10 @@ export class CanvasTGA {
 	set height(v) {
 		this._size[1] = v;
 		this._reinit();
+	}
+
+	get _tgaSize() {
+		return [this._tgaWidth, this._size[1]];
 	}
  
 	getContext() {
