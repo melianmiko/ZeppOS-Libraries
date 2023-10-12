@@ -20,19 +20,21 @@ export function Link(text) {
     }, text);
 }
 
-export function Paragraph(text) {
+export function Paragraph(text, styles={}) {
     if(typeof text !== "string")
         return View({
             style: {
                 display: "block",
-                marginBottom: "0.5rem"
+                marginBottom: "0.5rem",
+                ...styles
             }
         }, text.map((item) => typeof item == "string" ? Text({}, item) : item))
 
     return Text({
         style: {
             display: "block",
-            marginBottom: "0.5rem"
+            marginBottom: "0.5rem",
+            ...styles
         }
     }, text)
 }
