@@ -9,6 +9,8 @@ import { ICON_SIZE_SMALL } from "./UiParams";
 const TRANSLATION_OPTIONS = {
   "en": "English",
   "hu": "Hungarian",
+  "fr-FR": "Français",
+  "es-ES": "Español",
   "pt-BR": "Português (Brasileiro)",
   "ru": "Русский",
 };
