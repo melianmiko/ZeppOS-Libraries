@@ -25,6 +25,7 @@ export class BaseAboutScreen {
     ];
 
     this.iconSize = 80;
+    this.iconFile = "icon.png";
 
     this.donateText = "";
     this.donateUrl = null;
@@ -46,7 +47,7 @@ export class BaseAboutScreen {
     hmUI.createWidget(hmUI.widget.IMG, {
       x: (SCREEN_WIDTH - iconSize) / 2,
       y: SCREEN_MARGIN_Y,
-      src: "icon.png",
+      src: this.iconFile,
     }).addEventListener(hmUI.event.CLICK_UP, () => {
       if(clickCount > 0) return clickCount--;
       this.deviceInfoGroup.setProperty(hmUI.prop.VISIBLE, true);
