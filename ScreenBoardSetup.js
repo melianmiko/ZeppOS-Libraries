@@ -8,6 +8,8 @@ import { ICON_SIZE_SMALL } from "./UiParams";
 
 const TRANSLATION_OPTIONS = {
   "en": "English",
+  "de-DE": "Deutsch",
+  "cs-CZ": "Čeština",
   "hu": "Hungarian",
   "fr-FR": "Français",
   "es-ES": "Español",
