@@ -44,11 +44,11 @@ export function handleFetchRequest(ctx, request) {
                 json: data
             }
         })
-    }).catch(() => {
+    }).catch((e) => {
         ctx.response({
             data: {
                 status: 0,
-                json: null
+                json: {error: `${e.name}: ${e.message}`}
             }
         })
     })
