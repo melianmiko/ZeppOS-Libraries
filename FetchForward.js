@@ -14,7 +14,7 @@ export function clientFetch(url, params) {
     return messageBuilder.request({
         package: "fetch_fwd",
         data: fetchData
-    }, {timeout: 120000}).then((r) => {
+    }, {timeout: params.timeout ? params.timeout : 120000}).then((r) => {
         return {
             status: r.status,
             json: () => Promise.resolve(r.json),

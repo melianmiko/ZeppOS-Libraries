@@ -1,12 +1,13 @@
 import {Theme} from "./Theme";
 
-export function Title(text) {
+export function Title(text, styles={}) {
     return Text({
         style: {
             display: "block",
             fontSize: "1.5rem",
             marginTop: "0.6rem",
-            marginBottom: "0.5rem"
+            marginBottom: "0.5rem",
+            ...styles,
         }
     }, text);
 }
