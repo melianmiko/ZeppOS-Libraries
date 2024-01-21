@@ -15,7 +15,7 @@ export function Title(text, styles={}) {
 export function Link(text) {
     return Text({
         style: {
-            userSelect: "text",
+            userSelect: "all",
             color: Theme.accentColor,
         }
     }, text);

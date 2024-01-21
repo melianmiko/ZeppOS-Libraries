@@ -206,7 +206,8 @@ export class FsTools {
     try {
       const [id, type] = appContext._options.globalData.appTags;
       return [id, type];
-    } catch(_) {
+    } catch(e) {
+      console.log(`Calling hmApp.packageInfo(), this may cause black screen in some cases. Reason: ${e}`)
       const packageInfo = hmApp.packageInfo();
       return [packageInfo.appId, packageInfo.type];
     }

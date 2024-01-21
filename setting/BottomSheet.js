@@ -3,7 +3,6 @@ import {Theme} from "./Theme";
 
 export function BottomSheet(open, onClose, children) {
     if(!open) return null;
-    console.log(children)
 
     return View({
         style: {
