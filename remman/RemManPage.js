@@ -1,7 +1,7 @@
 import { WIDGET_WIDTH, SCREEN_HEIGHT, SCREEN_MARGIN_X, SCREEN_MARGIN_Y } from "../UiParams";
 
 export class RemManPage {
-  constructor(messageBuilder, handler, userURL="zepp.mmk.pw/zf", t=null) {
+  constructor(messageBuilder, handler, userURL, t=null) {
     this.messageBuilder = messageBuilder;
     this.userURL = userURL;
     this.widgets = [];
@@ -22,7 +22,8 @@ export class RemManPage {
   onConnect() {
     this.messageBuilder.request({
       package: "remman",
-      action: "init"
+      action: "init",
+      url: this.userURL,
     }).then((resp) => {
       this.startConnectingUi(resp.code, resp.uuid);
     })

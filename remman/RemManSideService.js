@@ -1,6 +1,7 @@
 export class RemManSideService {
-  constructor(messageBuilder, server="https://zepp.mmk.pw/zf") {
+  constructor(messageBuilder, server="") {
     this.state = "closed";
+    this.defaultServer = server;
     this.server = server;
     this.counter = 0;
     this.messageBuilder = messageBuilder;
@@ -12,8 +13,16 @@ export class RemManSideService {
 
     switch(request.action) {
       case "init":
+        this.setServer(request.url);
         return this.init(ctx);
     }
+  }
+
+  setServer(url) {
+    const targetUrl = url ? url : this.defaultServer;
+
+    console.log(`Set remman server URL: ${targetUrl}`);
+    this.server = targetUrl;
   }
 
   async init(ctx) {
